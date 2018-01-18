@@ -1,0 +1,46 @@
+{
+    "interactionModel":{
+        "languageModel":{
+            "invocationName":"potluck quiz",
+            "types":[
+              {
+                "name": "QUIZ_ANSWERS",
+                "values": [
+                  {
+                    "name": {
+                      "value": "los angeles"
+                    }
+                  }
+                ]
+              }
+            ],
+            "intents":[
+              {
+                "name": "AMAZON.HelpIntent",
+                "samples": []
+              },
+              {
+                "name": "AMAZON.StopIntent",
+                "samples": []
+              },
+              {
+                "name": "AnswerIntent",
+                "samples": [
+                  "{Answer}",
+                  "is it {Answer}"
+                ],
+                "slots": [
+                  {
+                    "name": "Answer",
+                    "type": "QUIZ_ANSWERS",
+                    "samples": []
+                  }
+                ]
+              },
+              {
+                "name":"AMAZON.YesIntent"
+              }
+            ]
+        }
+    }
+}

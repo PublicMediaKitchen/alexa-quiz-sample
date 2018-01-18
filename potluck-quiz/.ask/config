@@ -1,0 +1,19 @@
+{
+  "deploy_settings": {
+    "default": {
+      "skill_id": "amzn1.ask.skill.688f41da-e6e1-4da7-b8fa-3588fd7a82e8",
+      "was_cloned": false,
+      "merge": {
+        "skillManifest": {
+          "apis": {
+            "custom": {
+              "endpoint": {
+                "uri": "ask-custom-kpcc-quiz-default"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
