@@ -7,64 +7,56 @@ var Alexa = require("alexa-sdk");
 
 exports.handler = function(event, context) {
     var alexa = Alexa.handler(event, context);
+    alexa.appId = "amzn1.ask.skill.0744c589-8202-46c3-8807-b211a68b3bfc";
     alexa.registerHandlers(handlers, quizHandlers);
     alexa.execute();
 };
 
+const repromptSpeech = "Sorry, I didn't get that. Are you ready to rumble?";
+
 const states = {
   QUIZ: "_QUIZ"
 };
-const HELLO_MESSAGE = "Welcome to the Potluck Quiz! Are you ready?";
-const HELP_MESSAGE = "Pardon me? Do you want to start the quiz? You can try: 'Alexa, tell Potluck Quiz I'm ready.'";
 
 const QUIZ_CONTENT = [
-  { question: "Where does California need to store natural gas?", answer: "underground"},
-  { question: "What did the parents of starved Turpin plead? Guilty or not guilty?", answer: "not guilty"},
-  { question: "What did UCLA recently ban at frat house events?", answer: "alcohol"}
+  { question: "How many sides does a square have?", answer: "4" },
+  { question: "How many sides does a triangle have?", answer: "3"},
+  { question: "How many languages does a linguist know?", answer: "0"}
 ];
 
 function getQuestion(counter) {
   return QUIZ_CONTENT[counter].question;
 }
 
-function getCorrectAnswer(counter) {
+function getAnswer(counter) {
   return QUIZ_CONTENT[counter].answer;
 }
 
-function compareAnswers(slots, correctAnswer) {
-  for (let slot in slots) {
-    if (slots[slot].value != undefined) {
-      if (slots[slot].value.toString().toLowerCase() == correctAnswer.toString().toLowerCase()) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
 const handlers = {
-    "LaunchRequest": function () {
-      this.response.speak(HELLO_MESSAGE).listen(HELP_MESSAGE);
-      this.emit(":responseReady");
-    },
-    "AMAZON.StopIntent" : function() {
-        this.response.speak("Bye");
+    'LaunchRequest': function () {
+      this.response.speak("Hello, this is Captain Planet. Are you ready to rumble?").listen(repromptSpeech);
         this.emit(":responseReady");
     },
-    "AMAZON.HelpIntent" : function() {
-        this.response.speak(HELP_MESSAGE);
-        this.emit(":responseReady");
+    'AMAZON.StopIntent' : function() {
+        this.response.speak('Bye');
+        this.emit(':responseReady');
     },
-    "Unhandled" : function() {
-        this.response.speak(HELP_MESSAGE);
+    'AMAZON.HelpIntent' : function() {
+        this.response.speak("You can try: 'alexa, hello world' or 'alexa, ask hello world my" +
+            " name is awesome Aaron'");
+        this.emit(':responseReady');
     },
-    "AMAZON.YesIntent": function() {
+    'AMAZON.CancelIntent' : function() {
+        this.response.speak('Bye');
+        this.emit(':responseReady');
+    },
+    "AMAZON.YesIntent" : function() {
       this.handler.state = states.QUIZ;
-      this.emitWithState("Quiz");
+      this.emitWithState('Quiz');
     },
-    "AnswerIntent": function() {
-      this.handler.state = states.QUIZ;
-      this.emitWithState("AnswerIntent");
+    'Unhandled' : function() {
+        this.response.speak("Sorry, I didn't get that. You can try: 'alexa, hello world'" +
+            " or 'alexa, ask hello world my name is awesome Aaron'");
     }
 };
 
@@ -73,23 +65,21 @@ const quizHandlers = Alexa.CreateStateHandler(states.QUIZ, {
     this.attributes["counter"] = 0;
     this.attributes["score"] = 0;
     this.attributes["response"] = "";
-    this.emitWithState("AskQuestion");
+    this.emit(":ask", "How many sides does a square have?");
   },
   "AskQuestion": function() {
     let question = getQuestion(this.attributes["counter"]);
-    question = this.attributes["response"] + " " + question;
-    this.emit(":ask", question);
+    this.emit(":ask", this.attributes["response"] + " " + question);
   },
   "AnswerIntent": function() {
+    let correctAnswer = getAnswer(this.attributes["counter"]);
+    let userAnswer = this.event.request.intent.slots.UserAnswer.value.toString().toLowerCase();
     let response = "";
-    let correctAnswer = getCorrectAnswer(this.attributes["counter"]);
-    let correct = compareAnswers(this.event.request.intent.slots, correctAnswer);
-
-    if (correct) {
-      response = "Nice!";
+    if (correctAnswer == userAnswer) {
+      response = "Good job!";
       this.attributes["score"]++;
     } else {
-      response = "Too bad, so sad."
+      response = "Too bad, so sad.";
     }
     this.attributes["counter"]++;
 
@@ -97,12 +87,11 @@ const quizHandlers = Alexa.CreateStateHandler(states.QUIZ, {
       this.attributes["response"] = response;
       this.emitWithState("AskQuestion");
     } else {
-      const scoreResponse = `You scored ${this.attributes["score"]} out of ${QUIZ_CONTENT.length} questions right.`;
-      this.response.speak(response + " " + scoreResponse + " See you next week for new questions.");
+      this.response.speak(`Well done. You got ${this.attributes["score"]} out of ${QUIZ_CONTENT.length} correct.`);
       this.emit(":responseReady");
     }
   },
   "Unhandled": function() {
-    this.emitWithState("AnswerIntent");
-  }
+    this.response.speak(repromptSpeech);
+  },
 });

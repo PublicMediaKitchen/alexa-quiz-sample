@@ -1,20 +1,34 @@
 {
     "interactionModel":{
         "languageModel":{
-            "invocationName":"potluck quiz",
+            "invocationName":"captain planet",
             "types":[
               {
                 "name": "QUIZ_ANSWERS",
                 "values": [
                   {
                     "name": {
-                      "value": "los angeles"
+                      "value": "4"
+                    }
+                  },
+                  {
+                    "name": {
+                      "value": "3"
+                    }
+                  },
+                  {
+                    "name": {
+                      "value": "0"
                     }
                   }
                 ]
               }
             ],
             "intents":[
+              {
+                "name": "AMAZON.CancelIntent",
+                "samples": []
+              },
               {
                 "name": "AMAZON.HelpIntent",
                 "samples": []
@@ -24,21 +38,22 @@
                 "samples": []
               },
               {
+                "name": "AMAZON.YesIntent"
+              },
+              {
                 "name": "AnswerIntent",
                 "samples": [
-                  "{Answer}",
-                  "is it {Answer}"
+                  "{UserAnswer}",
+                  "is it {UserAnswer}",
+                  "what is {UserAnswer}"
                 ],
                 "slots": [
                   {
-                    "name": "Answer",
+                    "name": "UserAnswer",
                     "type": "QUIZ_ANSWERS",
                     "samples": []
                   }
                 ]
-              },
-              {
-                "name":"AMAZON.YesIntent"
               }
             ]
         }

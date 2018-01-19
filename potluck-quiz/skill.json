@@ -3,14 +3,14 @@
     "publishingInformation": {
       "locales": {
         "en-US": {
-          "summary": "Are you a news superfan? Test your knowledge with this week's quiz.",
+          "summary": "demo summary",
           "examplePhrases": [
-            "Alexa open Potluck Quiz",
-            "Alexa tell Potluck Quiz to start",
-            "Alexa tell Potluck Quiz I'm ready"
+            "Alexa open captain planet",
+            "Alexa start captain planet",
+            "Alexa begin captain planet"
           ],
-          "name": "potluck-quiz",
-          "description": "Sample Full Description"
+          "name": "demo",
+          "description": "demo full description"
         }
       },
       "isAvailableWorldwide": true,
