@@ -10,7 +10,7 @@ It may be helpful to keep these references open in separate tabs while going thr
 * [alexa developer console dashboard](https://developer.amazon.com/edw/home.html#/skills)
 
 ## Files   
-Starting from the skill directory, here are some files to take note of:
+These files don't exist yet, but we will create them. Starting from the skill directory, here are some files to take note of:
 * `./skill.json` Where you can modify the skill name, description, and example phrases.
 * `./models/*.json` For this example, we're using `en-US.json`.  This is where you can change the invocation name, intents, and sample phrases to invoke the intents.
 * `./lambda/custom/index.js` The meat of the skill. Where you can edit quiz questions and answers.
@@ -19,7 +19,7 @@ Starting from the skill directory, here are some files to take note of:
 
 ## Steps
 1. Start a new project with `ask new` and name the skill.  This will create a few new directories for the skill.
-1. Install tne npm dependencies in `/lambda/custom`:
+1. Change directories into your newly created skill directory. Install tne npm dependencies in `/lambda/custom`:
     ```
     $ cd lambda/custom
     $ npm install
@@ -28,6 +28,12 @@ Starting from the skill directory, here are some files to take note of:
 1. Deploy the app:  `ask deploy`
    
    Make note of the Skill Id that is created. You can also see the skill id through the [Alexa developer console](https://developer.amazon.com/edw/home.html#/skills).
+   
+1. copy & paste the skill id into `index.js` here:
+    ```
+    var alexa = Alexa.handler(event, context);
+    alexa.appId = "SKILL_ID_HERE";
+    ```
    
 1. Enable the app through that Alexa developer console.
    
