@@ -10,12 +10,11 @@ It may be helpful to keep these references open in separate tabs while going thr
 * [alexa developer console dashboard](https://developer.amazon.com/edw/home.html#/skills)
 
 ## Files   
-These files don't exist yet, but we will create them. Starting from the skill directory, here are some files to take note of:
+These files don't exist yet, but we will create them in the next steps. Starting from the skill directory, here are some files to take note of:
 * `./skill.json` Where you can modify the skill name, description, and example phrases.
 * `./models/*.json` For this example, we're using `en-US.json`.  This is where you can change the invocation name, intents, and sample phrases to invoke the intents.
 * `./lambda/custom/index.js` The meat of the skill. Where you can edit quiz questions and answers.
    
-
 
 ## Steps
 1. Start a new project with `ask new` and name the skill.  This will create a few new directories for the skill.
@@ -24,12 +23,13 @@ These files don't exist yet, but we will create them. Starting from the skill di
     $ cd lambda/custom
     $ npm install
     ```
-1. Open `SKILL_NAME/models/en-US.json` file and change the invocation name from `hello world` to something of your choosing. For example, `airtalk quiz`
+1. Go back to your skill's root directory: `cd ..`
+1. Open `./models/en-US.json` file and change the invocation name from `hello world` to something of your choosing. For example, `potluck quiz`
 1. Deploy the app:  `ask deploy`
    
    Make note of the Skill Id that is created. You can also see the skill id through the [Alexa developer console](https://developer.amazon.com/edw/home.html#/skills).
    
-1. copy & paste the skill id into `index.js` here:
+1. copy and paste the skill id into `index.js` here:
     ```
     var alexa = Alexa.handler(event, context);
     alexa.appId = "SKILL_ID_HERE";
@@ -39,7 +39,7 @@ These files don't exist yet, but we will create them. Starting from the skill di
    
 1. Simulate talking to the skill:
     ```
-    $ ask simulate -l en-US -t "tell airtalk quiz hello"
+    $ ask simulate -l en-US -t "tell potluck quiz hello"
     ```
     You should get a JSON response back with `"status": "SUCCESSFUL"` in the body.
 
@@ -52,5 +52,8 @@ These files don't exist yet, but we will create them. Starting from the skill di
     * if it's not the last question, we need a way to get to the next question
 1. Add a way to show a score.
 
+## Glossary
 
-* `emitWithState("TargetHandlerName")` transfers one state handler to another
+* `response.speak('Hello World')` builds the response but doesn't emit anything.
+* `emit(':responseReady')` emits the response that was already built.
+* `emitWithState("TargetHandlerName")` transfers one state handler to another and fires that event.
